@@ -10,6 +10,7 @@ void driveLeftWheel(int16_t velocity);
 void driveRightWheel(int16_t velocity);
 void driveBothWheels(int16_t velocityLeft, int16_t velocityRight);
 void powerOff();
+void r2d2Sound();
 
 
 void roomba_setup(){
@@ -51,9 +52,11 @@ void setup() {
   delay(1000); // 10 second delay
 
   roomba_setup();
-  driveBothWheels(60,60);
-  delay(10000); // 10 second delay
-  powerOff();
+  // driveBothWheels(60,60);
+  // delay(500); // 5 second delay
+  BB8Sound();
+  // delay(5000); // 5 second delay
+  // powerOff();
 
 
 }
@@ -89,6 +92,56 @@ void powerOff() {
   Serial.write(133); // Drive Direct command opcode
 }
 
-void loop() {
+void rest(int time) {
+  Serial.write(27); //not registered, thus a pause
+  Serial.write(time);
+}
 
+
+void BB8Sound1() {
+  Serial.write(140);  //opcode
+  // #of data types is (2N+2), where N is the # of notes in the song.
+  Serial.write(0);  //song number 0 (1)
+  Serial.write(16); //max notes (2)
+  Serial.write(75); //D#4 (3) - note
+  Serial.write(16); //0.25 (4) - duration
+  rest(8); //0.125 (5,6) - note, and duration
+  Serial.write(80); //G#5 (7) - note
+  Serial.write(4); //0.0625s (8) - duration
+  Serial.write(57); //A#3 (9) - note //this should be together with the G#5, however roomba cant play both sounds at the same time
+  Serial.write(11); //0.167s (10) - duration
+  rest(24); // 0.375s (11, 12)
+  Serial.write(77); //F4(13)
+  Serial.write(8); //0.125s(14)
+  Serial.write(75); // D#4 (15)
+  Serial.write(11); //0.167s (16)
+}
+void BB8Sound2() {
+  Serial.write(140);  //opcode
+  // #of data types is (2N+2), where N is the # of notes in the song.
+  Serial.write(1);  //song number 0 (1)
+  Serial.write(16); //max notes (2)
+  Serial.write(75); //D#4 (3) - note (1)
+  Serial.write(16); //0.25 (4) - duration
+  rest(8); //0.125 (5,6) - note, and duration (2)
+  Serial.write(80); //G#5 (7) - note (3)
+  Serial.write(4); //0.0625s (8) - duration
+  Serial.write(57); //A#3 (9) - note (4) //this should be together with the G#5, however roomba cant play both sounds at the same time
+  Serial.write(11); //0.167s (10) - duration
+  rest(24); // 0.375s (11, 12) (5)
+  Serial.write(77); //F4(13)(6)
+  Serial.write(8); //0.125s(14)
+  Serial.write(75); // D#4 (15) (7  )
+  Serial.write(11); //0.167s (16)
+}
+
+void playbb8() {
+  Serial.write(141);
+  Serial.write(0);
+  Serial.write(1);
+}
+
+void loop() {
+  playbb8();
+  
 }
