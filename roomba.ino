@@ -54,7 +54,8 @@ void setup() {
   roomba_setup();
   // driveBothWheels(60,60);
   // delay(500); // 5 second delay
-  BB8Sound();
+  BB8Sound1();
+  BB8Sound2();
   // delay(5000); // 5 second delay
   // powerOff();
 
@@ -102,46 +103,62 @@ void BB8Sound1() {
   Serial.write(140);  //opcode
   // #of data types is (2N+2), where N is the # of notes in the song.
   Serial.write(0);  //song number 0 (1)
-  Serial.write(16); //max notes (2)
-  Serial.write(75); //D#4 (3) - note
+  Serial.write(16); //max notes (2) 
+  Serial.write(75); //D#4 (3) - note (1)
   Serial.write(16); //0.25 (4) - duration
-  rest(8); //0.125 (5,6) - note, and duration
-  Serial.write(80); //G#5 (7) - note
+  rest(8); //0.125 (5,6) - note (2), and duration
+  Serial.write(80); //G#5 (7) - note(3)
   Serial.write(4); //0.0625s (8) - duration
-  Serial.write(57); //A#3 (9) - note //this should be together with the G#5, however roomba cant play both sounds at the same time
+  Serial.write(58); //A#3 (9) - note(4) //this should be together with the G#5, however roomba cant play both sounds at the same time
   Serial.write(11); //0.167s (10) - duration
-  rest(24); // 0.375s (11, 12)
-  Serial.write(77); //F4(13)
+  rest(24); // 0.375s (11, 12) (5)
+  Serial.write(77); //F4(13) (6)
   Serial.write(8); //0.125s(14)
-  Serial.write(75); // D#4 (15)
+  Serial.write(75); // D#4 (15) (7)
   Serial.write(11); //0.167s (16)
+  rest(16); // 0.25s (17, 18) (8)
+  Serial.write(63); // D#3 (19) (9)
+  Serial.write(4); //0.0625s (20)
+  //segment 2 // much more rapid
+  
+  Serial.write(75); //D#4 (21) (10)
+  Serial.write(4); //0.0625s (22)
+  Serial.write(63); //D#3 and D#4 at the same time :(( (22) (11)
+  Serial.write(11); //0.167s (23)
+  Serial.write(39); //D#1 and D#4 (24) (12)
+  Serial.write(31); //0.333s and 0.0625s (25)
+  Serial.write(57); //D#1 and A3 (26) (13)
+  Serial.write(8); //0.125s (27)
+  Serial.write(65); //D#1 and F3 and A3 (28) (14)
+  Serial.write(4); //0.333s and 0.125s and 0.0625s (29)
+  Serial.write(63); //D#1 and D#3 and A3 (30) (15)
+  Serial.write(4); // 0.0125s and 0.167s and 0.167s (31)
+  Serial.write(39); //D#1 and D#3, and A3 (32) (16)
+  Serial.write(4); //0.0625s (33)  
 }
+
 void BB8Sound2() {
   Serial.write(140);  //opcode
   // #of data types is (2N+2), where N is the # of notes in the song.
-  Serial.write(1);  //song number 0 (1)
-  Serial.write(16); //max notes (2)
-  Serial.write(75); //D#4 (3) - note (1)
-  Serial.write(16); //0.25 (4) - duration
-  rest(8); //0.125 (5,6) - note, and duration (2)
-  Serial.write(80); //G#5 (7) - note (3)
-  Serial.write(4); //0.0625s (8) - duration
-  Serial.write(57); //A#3 (9) - note (4) //this should be together with the G#5, however roomba cant play both sounds at the same time
-  Serial.write(11); //0.167s (10) - duration
-  rest(24); // 0.375s (11, 12) (5)
-  Serial.write(77); //F4(13)(6)
-  Serial.write(8); //0.125s(14)
-  Serial.write(75); // D#4 (15) (7  )
-  Serial.write(11); //0.167s (16)
+  Serial.write(1);  //song number 1
+  Serial.write(8); //max notes 
+  
+  Serial.write(65); //D#1 and A3 and A3 (34) (17)
+  Serial.write(8); //0.125s and 0.0625s and 0.125s (35)
+
+  Serial.write(39); //D#1 and A3 (36) (18)
+  Serial.write(31); //0.333s and 0.167s (37)
+  rest(31); //0.333s (38, 39) (19)
 }
 
 void playbb8() {
   Serial.write(141);
   Serial.write(0);
+  Serial.write(141);
   Serial.write(1);
 }
 
 void loop() {
   playbb8();
-  
+  delay(2000);
 }
